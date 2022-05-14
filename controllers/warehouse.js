@@ -19,3 +19,12 @@ exports.create = async (req, res) => {
       res.send({ message: err.message || "error creating a warehouse" });
     });
 };
+exports.fetch = (req, res) => {
+  const warehouse = Warehouse.find()
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.send({ message: err.message || "error fetching a warehouse" });
+    });
+};

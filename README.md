@@ -106,13 +106,13 @@ Request Body:
 Sample Output:
 {
     {
-    "_id": "6281a920bcfd9e5bbb0a16d3",
-    "name": "edited",
-    "units": 100,
-    "cost": 70000,
-    "__v": 0,
-    "warehouse": "627fee2b586fc3270d34cb46"
-}
+       "_id": "6281a920bcfd9e5bbb0a16d3",
+       "name": "edited",
+       "units": 100,
+       "cost": 70000,
+       "__v": 0,
+       "warehouse": "627fee2b586fc3270d34cb46"
+    }
 }
 ```
 

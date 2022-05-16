@@ -7,9 +7,12 @@ const PORT = process.env.PORT;
 
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI, () => {
-  console.log("db connected");
-});
+mongoose.connect(
+  "mongodb+srv://shopify:shopify@cluster0.0on4l.mongodb.net/db?retryWrites=true&w=majority",
+  () => {
+    console.log("db connected");
+  }
+);
 
 app.get("/home", (req, res) => {
   res.status(200).send("welcome");

@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
 const api_route = require("./routes/api.v1");
+const PORT = process.env.PORT;
 
 app.use(express.json());
 
@@ -16,8 +17,12 @@ app.get("/home", (req, res) => {
 
 app.use("/api", api_route);
 
-app.listen(3030, () => {
-  console.log("running pon 3000");
+app.listen(PORT, () => {
+  if (PORT) {
+    console.log(`running on http://localhost:${PORT}`);
+  } else {
+    console.log(`running on http://localhost:3000`);
+  }
 });
 
-module.exports = app
+module.exports = app;

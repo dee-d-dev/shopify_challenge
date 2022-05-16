@@ -21,24 +21,23 @@ exports.create = async (req, res) => {
     .save()
     .then((data) => {
       return res.status(200).send(data);
-     
     })
     .catch((err) => {
       return res.status(400).send({
         message: err.message || "error creating item",
       });
-      
     });
 };
 
 exports.edit = (req, res) => {
+  const { name, warehouse, units, cost } = req.body;
   const item = Item.findByIdAndUpdate(
     req.params.id,
     {
-      name: req.body.name,
-      warehouse: req.body.warehouse,
-      units: req.body.units,
-      cost: req.body.cost,
+      name,
+      warehouse,
+      units,
+      cost,
     },
     { new: true }
   )
@@ -63,9 +62,9 @@ exports.delete = async (req, res) => {
         res.status(404).send(`cannot find item with id ${req.params.id}`);
         process.exit();
       }
-      res
-        .status(200)
-        .send(`item with id ${req.params.id} has been successfully deleted`);
+      res.status(200).send({
+        message: `item with id ${req.params.id} has been successfully deleted`,
+      });
     })
     .catch((err) => {
       res.status(400).send({

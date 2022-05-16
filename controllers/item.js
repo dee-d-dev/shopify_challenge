@@ -53,7 +53,7 @@ exports.delete = (req, res) => {
         res.status(404).send(`cannot find item with id ${req.params.id}`);
         process.exit();
       }
-      res.send(`item with id ${req.params.id} has been successfully deleted`);
+      res.status(200).send(`item with id ${req.params.id} has been successfully deleted`);
     })
     .catch((err) => {
       res.status(400).send({

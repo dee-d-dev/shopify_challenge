@@ -1,26 +1,35 @@
 const Warehouse = require("../models/warehouse.model");
+const { warehouse_schema } = require("../utils/validation_schema");
 
 exports.create = async (req, res) => {
+  const { name, capacity, address, city, state, zip } = req.body;
+  try {
+    await warehouse_schema.validateAsync(req.body);
+  } catch (err) {
+    return res.status(400).send(err.details[0].message);
+  }
   const warehouse = new Warehouse({
-    name: req.body.name,
-    capacity: req.body.capacity,
-    address: req.body.address,
-    city: req.body.city,
-    state: req.body.state,
-    zip: req.body.zip,
+    name,
+    capacity,
+    address,
+    city,
+    state,
+    zip,
   });
 
-  await warehouse
+  warehouse
     .save()
     .then(() => {
-      res.send(warehouse);
+      return res.status(200).send(warehouse);
     })
     .catch((err) => {
-      res.send({ message: err.message || "error creating a warehouse" });
+      return res
+        .status(400)
+        .send({ message: err.message || "error creating a warehouse" });
     });
 };
-exports.fetch = (req, res) => {
-  const warehouse = Warehouse.find()
+exports.fetch = async (req, res) => {
+  const warehouse = await Warehouse.find()
     .then((data) => {
       res.send(data);
     })

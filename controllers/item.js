@@ -1,23 +1,33 @@
 const { Item } = require("../models/item.model");
 const express = require("express");
+const { item_schema } = require("../utils/validation_schema");
 
 exports.create = async (req, res) => {
+  const { name, warehouse, units, cost } = req.body;
+  try {
+    await item_schema.validateAsync(req.body);
+  } catch (err) {
+    return res.status(400).send(err.details[0].message);
+  }
+
   const item = new Item({
-    name: req.body.name,
-    warehouse: req.body.warehouse,
-    units: req.body.units,
-    cost: req.body.cost,
+    name,
+    warehouse,
+    units,
+    cost,
   });
-  await item
+
+  item
     .save()
     .then((data) => {
-      res.status(200).send(data).populate("warehouse");
+      return res.status(200).send(data);
+     
     })
     .catch((err) => {
-      res.status(400).send({
+      return res.status(400).send({
         message: err.message || "error creating item",
       });
-      process.exit();
+      
     });
 };
 
@@ -46,14 +56,16 @@ exports.edit = (req, res) => {
     });
 };
 
-exports.delete = (req, res) => {
-  const item = Item.findByIdAndDelete(req.params.id)
+exports.delete = async (req, res) => {
+  const item = await Item.findByIdAndDelete(req.params.id)
     .then((data) => {
       if (!data) {
         res.status(404).send(`cannot find item with id ${req.params.id}`);
         process.exit();
       }
-      res.status(200).send(`item with id ${req.params.id} has been successfully deleted`);
+      res
+        .status(200)
+        .send(`item with id ${req.params.id} has been successfully deleted`);
     })
     .catch((err) => {
       res.status(400).send({
@@ -63,8 +75,8 @@ exports.delete = (req, res) => {
     });
 };
 
-exports.view = (req, res) => {
-  const item = Item.find()
+exports.view = async (req, res) => {
+  const item = await Item.find()
     .populate("warehouse")
     .then((data) => {
       res.send(data);

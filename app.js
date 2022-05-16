@@ -17,7 +17,7 @@ app.get("/home", (req, res) => {
 app.use("/api", api_route);
 
 app.listen(3030, () => {
-  console.log("running pn 3000");
+  console.log("running pon 3000");
 });
 
 module.exports = app

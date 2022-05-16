@@ -70,6 +70,7 @@ describe("/test collection", () => {
   //test the PUT route
   describe("PUT /api/v1/item/:id", () => {
     it("should PUT an item", () => {
+      const id = "627fc89cacaba7f5a8a399bc";
       const item = {
         name: "test item",
         units: 10,
@@ -77,7 +78,7 @@ describe("/test collection", () => {
       };
       chai
         .request(server)
-        .put("/api/v1/item/:id")
+        .put("/api/v1/item/" + id)
         .send(item)
         .end((err, res) => {
           res.should.have.status(200);
@@ -87,16 +88,44 @@ describe("/test collection", () => {
           res.body.should.have.property("cost");
         });
     });
+
+    it("should NOT PUT an item", () => {
+      const id = "627fc89cacaba7f5a8a399bc";
+      const item = {
+        name: "test item",
+        units: 10,
+        cost: 700,
+      };
+      chai
+        .request(server)
+        .put("/api/v1/item")
+        .end((err, res) => {
+          res.should.have.status(404);
+        });
+    });
   });
 
   //test the DELETE route
   describe("DELETE /api/v1/item/:id", () => {
     it("should DELETE an item", () => {
+      const id = "627fc89cacaba7f5a8a399bc";
+
       chai
         .request(server)
-        .delete("/api/v1/item/:id")
+        .delete("/api/v1/item/" + id)
         .end((err, res) => {
           res.should.have.status(200);
+        });
+    });
+
+    it("should NOT DELETE an item that doesn't exist in the database", () => {
+      const id = "627fc89cacaba7f5a8a399bc";
+
+      chai
+        .request(server)
+        .delete("/api/v1/item/" + id)
+        .end((err, res) => {
+          res.should.have.status(404);
         });
     });
   });

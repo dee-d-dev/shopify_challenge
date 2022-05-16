@@ -20,6 +20,7 @@ exports.create = async (req, res) => {
       process.exit();
     });
 };
+
 exports.edit = (req, res) => {
   const item = Item.findByIdAndUpdate(
     req.params.id,
@@ -44,6 +45,7 @@ exports.edit = (req, res) => {
       process.exit();
     });
 };
+
 exports.delete = (req, res) => {
   const item = Item.findByIdAndDelete(req.params.id)
     .then((data) => {
@@ -60,6 +62,7 @@ exports.delete = (req, res) => {
       process.exit();
     });
 };
+
 exports.view = (req, res) => {
   const item = Item.find()
     .populate("warehouse")
